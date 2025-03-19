@@ -1,0 +1,14 @@
+{
+    "name": "everinel",
+    "version": "1.0.0",
+    "private": false,
+    "description": "Pure persistent binary NodeJS JavaScript database",
+    "main": "src/i.js",
+    "type": "module",
+    "imports": {
+        "#purekeep": "./test/purekeep.js"
+    },
+    
+    "author": "dencelman1",
+    "license": "MIT"
+}
