@@ -1,0 +1,55 @@
+
+#cudmsg {
+    color: gray;
+    display: block;
+    margin: auto 0 auto 20px;
+    font-size:18px;
+
+
+    &.s {
+        color:green;
+    }
+    
+    &.e {
+        color:red;
+    }
+}
+
+
+#panel {
+    width:100%;
+    flex:10;
+    &>.gr {
+        width:80%;
+    }
+
+    &>.gr, & {
+        display:flex;
+        flex-direction:row;
+    }    
+
+    & #query{
+        width:100%;
+        line-height:28px;
+        padding:10px;
+        font-size:16px;
+    }
+    & input.sm {
+        width:80px;
+        padding-left:5px;
+    }
+
+    & button {
+        min-width:30px;
+    }
+
+    & #create {
+        margin-left:auto;
+        margin-right:20px;
+    }
+
+    & input, & button {
+        margin:auto 0 auto 10px;
+        height:30px;
+    }
+}

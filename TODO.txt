@@ -1,0 +1,16 @@
+
+
+create;
+
+query parser ( (a > 0 && b = 0) -> [0,0,0,0,0,0,0] );
+
+read;
+update;
+delete;
+
+change keys position;
+
+
+[bl]:
+
+analysis scripts;

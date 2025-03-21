@@ -9,7 +9,8 @@ export default (
                     a
                     .server(
                         tables,
-                        tconf
+                        tconf,
+                        a
                     )
                 )
             )

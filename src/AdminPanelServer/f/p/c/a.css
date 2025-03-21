@@ -1,4 +1,44 @@
+@import url("./content.css");
 
-.tmpl {
+button {
+    background-color:white;
+    border:none;
+    outline:1px solid gray;
+    border-radius:5px;
+    &:hover {
+        outline-width:2px;
+    }
+    &:active, &:focus{
+        outline-color:black;
+    }
+}
+
+input {
+    border:none;
+    outline:1px solid gray;
+    border-radius:5px;
+    &:focus {
+        outline:1px solid blue;
+    }
+}
+
+
+
+#tmpl {
     display:none;
+}
+
+body {
+    margin:0;
+}
+button {
+    cursor:pointer;
+}
+li {
+    list-style:none;
+}
+
+#tables,
+#view {
+    overflow:hidden;
 }

@@ -1,0 +1,40 @@
+@import url("./panel.css");
+@import url("./e.css");
+
+
+#view.form {
+    
+    &>#panel>.search {
+        display:none;
+    }
+    
+    &>#panel>.cud {
+        display:flex;
+    }
+    & #form {
+        display:block;
+    }
+}
+
+#view {
+    
+    display:flex;
+    flex-direction:column;
+
+    & #form {
+        z-index:100;
+        display:none;
+    }
+
+
+    &>#panel>.search {
+        display:flex;
+    }
+
+    &>#panel>.cud {
+        display:none;
+    }
+
+    height:100%;
+    flex:8;
+}

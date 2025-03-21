@@ -1,0 +1,85 @@
+
+
+#e {
+    flex:90;
+    padding:0;
+    margin:0;
+    position:relative;
+}
+
+#fields.order input {
+    display:block;
+}
+
+#fields {
+    width:100%;
+    height:fit-content;
+    position:relative;
+}
+
+#fields>input {
+    width:80%;
+    height:30px;
+    position:absolute;
+    z-index:10;
+    display:none;
+    top:10px;
+    left:20px;
+    border-radius:0;
+}
+
+#fields>ul{
+    width:fit-content;
+    padding:10px 0 0 20px;
+    display:flex;
+    flex-direction:row;
+    & button>span {
+        font-size:16px;
+        font-weight:bold;
+        width:fit-content;
+        white-space:nowrap;
+    }
+    
+    & button {
+        overflow:hidden;
+        padding:0;
+        border-radius:0;
+        outline:1px solid gray;
+        
+        height:30px;
+    }
+}
+
+#form>form>ul>.form-input {
+    margin-top:10px;
+    display:flex;
+    flex-direction:column;
+
+    & input {
+        margin-top:5px;
+    }
+
+    & input[type="text"],
+    & input[type="number"] {
+        width:50%;
+        height:30px;
+        border-radius:2px;
+        font-size:16;
+        padding: 0 5px;
+    }
+
+    & input[type="checkbox"]{
+        outline:none;
+        width:15px;
+        height:15px;
+    }
+}
+
+#form {
+    position:absolute;
+    width:100%;
+    height:100%;
+    background-color:white;
+
+    overflow:scroll;
+}
