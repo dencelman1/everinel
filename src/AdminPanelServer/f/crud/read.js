@@ -1,73 +1,21 @@
 
 
 export default (
-    (t, ZERO, u,s,b) => {
+    (s,t,o,l,QL,Q,QV) => {
         var
-
-            i = 0,
-
-            tb = t[
-                u.substring(0, (i = u.indexOf("/")))
-            ],
-            rules = tb.t,
-
-            O = th.arrayFromO,
-
-            EL = tb.EL,
-
-            o = Number(u.substring(++i, (i = (u.indexOf("/", i))))),
-            l = Number(u.substring(++i, (i = (u.indexOf("/", i))))),
-            QL = Number(u.substring(++i, (i = (u.indexOf("/", i))))),
-
-            from = 0,
-
-            l4 = (4 * l),
-            B = tb.entry(l, l4),
-            // al = l + l4,
-
+            EL = t.EL,
+            back = l*EL,
+            B = t.entry(l, ((l) * 4)),
             I = new Uint32Array(l),
-            QVL = (O.length = Math.ceil(QL/4)),
-
-            QV = Array.from(((O.length = QVL), O), tb.NULL),
-            QVT = Array.from(((QV), ZERO)),
-            qvi = 0,
-
-            f = 0,
-
-            Q = new Uint8Array(QL),
-            ai = 0,
-            qai = 0,
-            ai2 = 0
+            f = 0
         ;
-
-        // /t/read/[table_id]/[offset]/[length]/[QL]/
-        // /[field]/[operation_id]/[value]/[logic_operation_id]/....
-        
-        for (
-            ;
-            ai < QL;
-            ai++
-        ) {
-            qai = Number(u.substring(++i, (i = (u.indexOf("/", i)))));
-
-            ((ai2 = ai - 2) % 4)
-            ||
-            ( QVT[qai] = rules[ai2] );
-
-            Q[ai] = qai;
-        };
-
-        ai = 0;
-        
-        for (;ai<QVL;ai++) {
-            QV[ai] = Buffer.from(b.substring(qvi, (qvi+=QVT[ai])))
-        };
-
-        s.setHeader(
+        s
+        .setHeader("Content-Type", "application/octet-stream")
+        .setHeader(
             "x-a",
             (
                 f = (
-                    tb.read(
+                    t.read(
                         B, I,
 
                         o,l,
@@ -78,16 +26,10 @@ export default (
             )
             .toString()
         );
-        
-        for (
-                (i = 0),
-                (from = EL * l)
-            ;
-            i < f;
-            (from += 4), i++
-        ) {
-            B.writeUInt8(I[i], from)
+        for(var i = 0; i<f;((i++), (back += 4))) {
+            B.writeUint32LE(I[i], back);
         };
-        return B;
+        s.writeHead(200, null);
+        return s.end(B);
     }
 )

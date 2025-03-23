@@ -6,21 +6,15 @@
         "bse_next",
         "hc",
         "hL",
-        "bse",
-        "bse_s",
-        "she",
         "h",
-        "sh",
-        "sh_bs",
-        "bs_value"
+        "sh"
     ],
     "MAX_EL": 2147483647,
     "SERVICE_BYTES": 1,
-    "MAX_SAFE_INTEGER": 9007199254740991,
-    "HOLE_SIZE": 8,
+    "HOLE_SIZE": 4,
     "conftime": 200,
-    "mx": 9007199254740960,
-    "mx_h": 1125899906842620,
+    "mx": 4294967040,
+    "mx_h": 1073741760,
     "f": 4,
     "t": [
         0,
@@ -52,5 +46,10 @@
             5
         ]
     ],
-    "EL": 5
+    "EL": 5,
+    "bs_value": 4096,
+    "sh_bs": 1048832,
+    "she": 858993408,
+    "bse_s": 4095,
+    "bse": 819
 }

@@ -1,10 +1,43 @@
 
+#entries {
+    &>ul {
+        padding:0 0 0 20px;
+    }
+}
+.entry>button>ul>li {
+    display:block;
+    &>span, & {
+        height:30px;
+    }
+    &>span{
+        font-weight:bolder;
+        line-height:30px;
+        font-size:16px;
+        display:block;
+        width:100%;
+    }
+}
+
+.entry {
+    width:100%;
+    &>button {
+        padding:0;
+        border-radius:0;
+        outline:1px solid gray !important;
+    }
+    &>button>ul {
+        padding:0;
+        display:flex;
+        flex-direction:row;
+    }
+}
 
 #e {
     flex:90;
     padding:0;
     margin:0;
     position:relative;
+    overflow:scroll;
 }
 
 #fields.order input {
@@ -30,12 +63,12 @@
 
 #fields>ul{
     width:fit-content;
-    padding:10px 0 0 20px;
+    padding:10px 10px 0 20px;
     display:flex;
     flex-direction:row;
     & button>span {
         font-size:16px;
-        font-weight:bold;
+        font-weight:400;
         width:fit-content;
         white-space:nowrap;
     }

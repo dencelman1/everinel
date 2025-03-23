@@ -1,6 +1,7 @@
 import {AdminPanelServer} from '../src/i.js';
 import {table_many} from '#purekeep';
-import tables from './tables.js';
+import names from './c/names.js';
+import pathes from './c/pathes.js';
 
 
 (
@@ -10,8 +11,7 @@ import tables from './tables.js';
         return (
             AdminPanelServer(
                 port,
-                tables,
-                table_many(tables),
+                table_many(names, pathes),
                 () => console.log(port)
             )
         );

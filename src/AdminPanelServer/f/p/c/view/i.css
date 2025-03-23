@@ -3,6 +3,9 @@
 
 
 #view.form {
+    & #e {
+        overflow:hidden;
+    }
     
     &>#panel>.search {
         display:none;

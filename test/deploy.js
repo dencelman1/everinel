@@ -1,5 +1,7 @@
 import {table_deploy_many} from '#purekeep';
-import t from './tables.js';
+
+import tables from './c/tables.js';
+import pathes from './c/pathes.js';
 
 
-table_deploy_many(t);
+table_deploy_many(tables, pathes);

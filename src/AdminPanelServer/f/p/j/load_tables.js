@@ -19,7 +19,7 @@ export default (
                 c = r.cloneNode(true)
             )
             .querySelector('span')
-            .textContent = a[i].n;
+            .textContent = a[i].n.n;
             (b = c.querySelector("button")).setAttribute("data-a", i.toString());
             b.addEventListener("click", ontable);
             tables.appendChild(c);

@@ -6,11 +6,11 @@
     font-size:18px;
 
 
-    &.s {
+    &.true {
         color:green;
     }
     
-    &.e {
+    &.false {
         color:red;
     }
 }
@@ -26,9 +26,28 @@
     &>.gr, & {
         display:flex;
         flex-direction:row;
-    }    
+    }
 
-    & #query{
+    & #q:focus {
+        outline-width:2px;
+        outline-style:solid;
+    }
+
+    & #q.true {
+        outline-color: green;
+    }
+
+    & #q.false {
+        outline-color: red;
+    }
+
+    & #q:hover {
+        outline-style:dashed;
+    }
+
+    & #q {
+        outline-width:1px;
+        outline-style:solid;
         width:100%;
         line-height:28px;
         padding:10px;
@@ -43,7 +62,7 @@
         min-width:30px;
     }
 
-    & #create {
+    & #open {
         margin-left:auto;
         margin-right:20px;
     }

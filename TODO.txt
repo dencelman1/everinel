@@ -1,16 +1,22 @@
 
 
 create;
-
-query parser ( (a > 0 && b = 0) -> [0,0,0,0,0,0,0] );
-
 read;
-update;
-delete;
+
+
+update_id;
+delete_id;
+
+in_purekeep( with _id operations check if exists (for delete, update, read) );
+read_id;
+
 
 change keys position;
+filter by field;
 
 
 [bl]:
 
 analysis scripts;
+big endian ( str );
+

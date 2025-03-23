@@ -2,9 +2,11 @@ import { dirname, extname, join } from 'path';
 import { existsSync, readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 
+import { create_body, read_body } from './body/i.js';
+
 
 export default (
-    (t, tc,funcs) => {
+    (tables, funcs) => {
         var
             h = {
                 ".html": () => "text/html",
@@ -13,25 +15,29 @@ export default (
                 ".json": () => "application/json"
             },
             pb = join( dirname( fileURLToPath( import.meta.url ) ), "p" ),
-            body = (
-                (cb) => {
-                    var b = '';
-                    return (
-                        req
-                        .on('data', a => (b += a))
-                        .on('end', () => cb(b))
+
+            create = funcs.create,
+            read = funcs.read,
+
+
+            oncreate = (b,tb,s) => {
+                var v = create(tb,s,b,Buffer.allocUnsafe(8));
+                return (
+                    crud_a(s)
+                    .writeHead( 200, null )
+                    .end(
+                        v
                     )
-                }
-            ),
-            ZERO = () => 0,
+                );
+            },
+
+            
             crud_a = (s) => (
                 s
                 .setHeader("Content-Type", "application/octet-stream")
-                .writeHead( 200, null )
             ),
-            
-            read = funcs.read,
-            create = funcs.read
+
+            buffer_from = (v) => Buffer.from(v)
         ;
         
         return (
@@ -39,7 +45,7 @@ export default (
                 var
                     p = "",
                     u = q.url,
-                    q = "",
+                    query = "",
                     i = 0
                 ;
                 
@@ -49,19 +55,29 @@ export default (
                         (u = u.substring(3))
                         .startsWith('read/')
                         ? (
-                            body((b) => (
-                                crud_a(s)
-                                .end(read(t, ZERO, u.substring(5),s,b))
-                            ))
+                            read_body(
+                                q,
+                                s,
+                                tables[
+                                    (u = u.substring( 6 + (query = u.substring(5, u.indexOf("/",5))).length)),
+
+                                    parseInt( query )
+                                ],
+                                u,
+                                buffer_from,
+                                read
+                            )
                         )
                         :
                         u
                         .startsWith('create/')
                         ? (
-                            body((b) => (
-                                crud_a(s)
-                                .end(create(t, u.substring(7),s,b))
-                            ))
+                            create_body(
+                                q,
+                                s,
+                                tables[parseInt(u.substring(7))],
+                                oncreate
+                            )
                         )
                         :
                         u.endsWith('c')
@@ -69,7 +85,7 @@ export default (
                             s
                             .setHeader("Content-Type", "application/json")
                             .writeHead( 200, null )
-                            .end( JSON.stringify(tc) )
+                            .end( JSON.stringify( tables ) )
                         )
                         : s.writeHead(404, null).end()
                         
@@ -78,7 +94,7 @@ export default (
                         ((i = u.indexOf("?")) === -1)
                         ||
                         (
-                            q = u.substring(i + 1),
+                            query = u.substring(i + 1),
                             (u = u.substring(0,i))
                         ),
 
