@@ -11,6 +11,15 @@ export var
         body: null
     },
 
+    deleteO = {
+        method: "DELETE",
+    },
+
+    updateO = {
+        method: "PATCH",
+        body: null,
+    },
+
     readO = {
         headers,
         method: "POST",

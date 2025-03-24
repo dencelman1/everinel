@@ -2,7 +2,7 @@ import { dirname, extname, join } from 'path';
 import { existsSync, readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 
-import { create_body, read_body } from './body/i.js';
+import { create_body, read_body, delete_body,update_body } from './body/i.js';
 
 
 export default (
@@ -18,10 +18,9 @@ export default (
 
             create = funcs.create,
             read = funcs.read,
-
-
+            
             oncreate = (b,tb,s) => {
-                var v = create(tb,s,b,Buffer.allocUnsafe(8));
+                var v = create(tb,s,b,Buffer.allocUnsafe(4));
                 return (
                     crud_a(s)
                     .writeHead( 200, null )
@@ -77,6 +76,27 @@ export default (
                                 s,
                                 tables[parseInt(u.substring(7))],
                                 oncreate
+                            )
+                        )
+                        :
+                        u
+                        .startsWith('update/')
+                        ? (
+                            update_body(
+                                q,
+                                s,
+                                tables[parseInt(u.substring(7))],
+                                oncreate
+                            )
+                        )
+                        :
+                        u
+                        .startsWith('delete/')
+                        ? (
+                            delete_body(
+                                s,
+                                tables[ (u = u.substring(7)).substring(0, (i = u.indexOf("/"))) ].v,
+                                u.substring(i + 1)
                             )
                         )
                         :

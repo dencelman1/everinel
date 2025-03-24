@@ -2,6 +2,10 @@ import load_tables from './load_tables.js';
 import _formFieldsRd from "./formFieldsRd.js";
 import _load_table from './load_table.js';
 
+import to_input from './to_input.js';
+import load_input from './load_input.js';
+
+
 import color from './color.js';
 import width from './width.js';
 
@@ -12,10 +16,9 @@ import fill_str from './fill_str.js';
 import bto from './purekeep/bto.js';
 import bfrom from './purekeep/bfrom.js';
 
-import trim_str from './trim_str.js';
 import limits from './limits.js';
 import {fi_keydown, fi_blur} from './fields_i/i.js';
-import {createO,readO} from "./O.js";
+import {createO, readO, updateO, deleteO} from "./O.js";
 
 import {fields_contextmenu, fields_from, _fo_rd} from './fields.js';
 import {_open_click} from './open.js';
@@ -23,9 +26,10 @@ import {_open_click} from './open.js';
 import {tables_from} from './tables.js';
 import {onintblur} from './int.js';
 import {formclose} from './form.js';
+import {_entry_click} from "./entries.js";
+
 
 import query_parse from './query_parse.js';
-import load_to_form from './load_to_form.js';
 
 
 fetch("/t/c")
@@ -51,6 +55,7 @@ fetch("/t/c")
         k = "",
 
         T = 0,
+        getT = () => T,
 
         limit = document.getElementById("l"),
         offset = document.getElementById("o"),
@@ -59,6 +64,16 @@ fetch("/t/c")
         cudmsg = document.getElementById("cudmsg"),
 
         tables = Array.from(a, tables_from(fields_from, width)),
+
+        formopen = (
+            () => {
+                view.add("form"),
+                OPEN.setAttribute("title", "Close"),
+                (OPEN.textContent = "x")
+            }
+        ),
+
+        entry_click = _entry_click(getT,a,tables,formopen,cudmsg,to_input,load_input,bfrom),
 
         number_input = (
             (f) => (e) => {
@@ -87,6 +102,8 @@ fetch("/t/c")
                 );
             }
         ),
+
+        
 
         formFieldsRd = _formFieldsRd(
             document.querySelector("#tmpl>.form-input"),
@@ -122,14 +139,16 @@ fetch("/t/c")
             number_input( parseFloat ),
             number_input( BigInt ),
             
-            (() => T),
+            getT,
             bfrom,
             a,
             tables,
-            trim_str
+
+            load_input,
+            to_input
         ),
 
-        load_table = _load_table(offset,limit,query,cudmsg,_fo_rd(fieldsUl,color,FIELD),formFieldsRd,load_entries,color,bfrom),
+        load_table = _load_table(entry_click,offset,limit,query,cudmsg,_fo_rd(fieldsUl,color,FIELD),formFieldsRd,load_entries,color,bfrom),
 
         onintinput = (e) => {
             var t = e.currentTarget;
@@ -145,50 +164,123 @@ fetch("/t/c")
         
         createThen = (
             (b) => (
-                cudmsg.textContent = (
+                cudmsg.value = (
                     (
-                        tables[T].i = (
-                            Number(
-                                new DataView(b)
-                                .getBigUint64(0,true)
-                            )
+                        tables[T]
+                        .i = (
+                            new DataView(b)
+                            .getUint32(0,true)
                         )
                     )
                     .toString()
                 )
             )
+        ),
+
+        cudmsgButton = cudmsg.parentElement,
+
+        cudmsgcopy_to = () => (
+            cudmsg
+            .className = (
+                tables[T]
+                .cudmsg
+                .toString()
+            )
+        ),
+
+        cudmsg_then = () => (
+            (cudmsg.className = "copy"),
+            setTimeout(
+                cudmsgcopy_to,
+                200
+            )
         )
+        
     ;
     return (
+
+        // TODO:
+        cudmsgButton
+        .addEventListener(
+            "contextmenu",
+            (e) => {
+                return (
+                    e.preventDefault()
+                );
+            }
+        ),
+
+        cudmsgButton
+        .addEventListener(
+            "click",
+            () => (
+                navigator
+                .clipboard
+                .writeText( tables[T].i.toString() )
+                .then( cudmsg_then )
+                .catch(console.error)
+            )
+        ),
 
         query.addEventListener("input", (
             (e) => {
                 var
                     t = e.currentTarget,
-                    cv = tables[T],
-                    r = query_parse((cv.q = t.value), cv, a[T], bto)
+                    cv = tables[T]
                 ;
                 return (
-                    
-                    (t.className = r.toString()),
-                    console.log(JSON.stringify([
-                        r,
-                        cv.qv,
-                        cv.qp,
-                    ], null, 4))
+                    t.className = (
+                        (
+                            query_parse((cv.q = t.value), cv, a[T], bto)
+                        )
+                        .toString()
+                    )
                 );
             }
         )),
 
         fields.addEventListener("contextmenu", fields_contextmenu),
 
+        document
+        .getElementById("delete")
+        .addEventListener(
+            "click",
+            (e) => {
+                var ct = tables[T],
+                    i = ct.i;
+                
+                return(
+                    (i >= 0)
+                    &&
+                    fetch( `/t/delete/${T.toString()}/${ i.toString() }`, deleteO)
+                    .then(
+                        (r) => {
+                            var ok = r.ok;
+                            return (
+                                (cudmsg.className = (ct.cudmsg = ok).toString()),
+
+                                cudmsg.value = (
+                                    ct.i = (
+                                        ok
+                                        ? -1
+                                        : -r.status
+                                    )
+                                )
+                                .toString()
+                            );
+                        }
+                    )
+                );
+            }
+        ),
 
         document
         .getElementById("reload")
         .addEventListener("click", (
             (e) => {
-                var ct = tables[T];
-                return (
+                var ct = tables[T],
+                    qlimit = ( ct.l );
+                return (ct.qr) && (
                     fetch(
                         (
                             `/t/read/${T}/${
@@ -197,18 +289,22 @@ fetch("/t/c")
                                     .body = JSON.stringify(ct.qv)
                                 )
                                 .length
-                            }/${ct.o}/${ct.l}/${ct.ql}/${ct.qp}`
+                            }/${ct.o}/${qlimit}/${ct.ql}/${ct.qp}`
                         ),
                         readO
                     )
                     .then(
                         (r) => (
+                            (r.ok)
+                            &&
                             r
                             .arrayBuffer()
                             .then(b => load_entries(
                                 (ct.e = new DataView(b)),
                                 (ct.el = Number(r.headers.get("x-a"))),
-                                a[T].v,ct.k,color,bfrom
+                                a[T].v,ct.k,color,bfrom,
+                                entry_click,
+                                (ct.qlimit = qlimit)
                             ))
                         )
                     )

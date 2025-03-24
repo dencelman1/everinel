@@ -2,7 +2,7 @@
 
 export default (
     (v,l) => {
-        var i = l-1;
+        var i = (l - 1);
         for (; i;i--){
             if (v[i] !== "\x00") {
                 i++;

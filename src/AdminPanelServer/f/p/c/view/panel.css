@@ -1,10 +1,28 @@
 
+#cudmsgButton {
+    width: fit-content;
+    padding:0;
+    margin: auto 0 auto 20px;
+}
+
 #cudmsg {
+    
+    width:160px;
+    margin:0 !important;
+    padding:0 10px;
+    text-align: right;
+    pointer-events: none;
     color: gray;
     display: block;
-    margin: auto 0 auto 20px;
+    
     font-size:18px;
+    transition: 200ms color, .2s background-color ;
+    outline:none;
 
+    &.copy {
+        color: blue;
+        font-weight: bold;
+    }
 
     &.true {
         color:green;

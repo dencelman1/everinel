@@ -3,7 +3,6 @@ import {table_many} from '#purekeep';
 import names from './c/names.js';
 import pathes from './c/pathes.js';
 
-
 (
     (
         port,
@@ -11,7 +10,7 @@ import pathes from './c/pathes.js';
         return (
             AdminPanelServer(
                 port,
-                table_many(names, pathes),
+                table_many(names, pathes, 5_000),
                 () => console.log(port)
             )
         );

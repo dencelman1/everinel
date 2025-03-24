@@ -19,11 +19,10 @@ export var
                 d.setInt8(0, 1),
                 ({
                     d,
+                    k: Array.from(v.n.k, fields_from(V.r,16,width,V.t)),
                     
                     e: null,
                     el: 0,
-
-                    qe: null, // entries
 
                     q: "",
                     qr: true,
@@ -31,17 +30,14 @@ export var
                     qp: "",
                     ql: 0,
                     qv: [],
+                    qlimit:l,
 
                     le:Math.floor(1048576 / EL),
                     l,
+                    o: 0,
 
                     i: -1,
-
-                    k: Array.from(v.n.k, fields_from(V.r,16,width,V.t)),
-
                     cudmsg: false,
-                    o: 0,
-                    
                 })
             );
         }

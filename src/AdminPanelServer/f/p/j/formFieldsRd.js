@@ -17,7 +17,8 @@ export default (
         a,
         tables,
 
-        trim_str
+        load_input,
+        to_input
     ) => {
         return (
             (T,v,i) => {
@@ -29,8 +30,10 @@ export default (
                     TABLE_I = A(),
                     at = a[TABLE_I],
                     atv = at.v,
-                    l = 0
+                    l = atv.r[i]
+                    
                 ;
+                
                 return (
                     (
                         r.querySelector("span").textContent = v
@@ -41,15 +44,6 @@ export default (
 
                     t === 2
                     ? (
-                        (
-                            I.checked =
-                                bfrom[t](
-                                    tables[TABLE_I].d,
-                                    atv.m[i][0],
-                                    true,
-                                    0
-                                )
-                        ),
                         I.setAttribute("type","checkbox"),
                         I.addEventListener("change", checkbox)
                     )
@@ -59,50 +53,26 @@ export default (
                         ? (
                             I.setAttribute("type","text"),
                             I.addEventListener("input", text),
-                            (
-                                I.value =
-                                    trim_str(
-                                        bfrom[t](
-                                            tables[TABLE_I].d,
-                                            atv.m[i][0],
-                                            true,
-                                            (l = atv.r[i])
-                                        ),
-                                        l
-                                    )
-                            ),
                             I.setAttribute("maxlength", l.toString())
                         )
                         : (
-                            (
-                                I.value =
-                                    (
-                                        bfrom[t](
-                                            tables[TABLE_I].d,
-                                            atv.m[i][0],
-                                            true,
-                                            (atv.r[i])
-                                        )
-                                    )
-                                    .toString()
-                            ),
-                            
                             I.setAttribute("type","number"),
                             I.addEventListener("blur", onintblur),
 
-                            (
-                                (t === 10 || t === 11)
-                                ? I.addEventListener("input", float)
-                                : (
-                                    I.addEventListener("input", (
-                                        ((t === 5) || (t === 9))
-                                        ? big_integer
-                                        : integer
-                                    ))
-                                )
-                            )
+                            ((t === 10) || (t === 11))
+                            ? I.addEventListener("input", float)
+                            : I.addEventListener("input", (
+
+                                ((t === 5) || (t === 9))
+                                ? big_integer
+                                : integer
+
+                            ))
                         )
                     ),
+
+
+                    load_input(I,t, tables[TABLE_I].d, atv.m[i][0], l,bfrom,to_input),
 
                     form_fields.appendChild(r),
                     T

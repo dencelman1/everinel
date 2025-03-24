@@ -1,7 +1,7 @@
 
 
 export default (
-    (d,l, atv,keys,color,bfrom) => {
+    (d,l, atv,keys,color,bfrom, entry_click,limit) => {
         var
             ENTRY = document.querySelector("#tmpl>.entry"),
             KEY = document.querySelector("#tmpl>.key"),
@@ -12,12 +12,11 @@ export default (
             types = atv.t,
             
             m = atv.m,
-            EL = atv.EL
-        ;
-        
-        
-        ul.innerHTML = "";
+            EL = atv.EL,
 
+            back = (EL * limit)
+        ;
+        ul.innerHTML = "";
         for (
             var
                 i = 0,
@@ -27,15 +26,24 @@ export default (
                 k = null,
                 type = 0,
                 O = 0,
-                rule = 0
+                rule = 0,
+                button = null
             ;
             i < l;
-            i++, (j=0), (O += EL)
+            i++, (j=0), (O += EL), (back += 4)
         ) {
             enul = (
                 (en = ENTRY.cloneNode(true))
                 .querySelector("ul")
             );
+            (
+                button = en.querySelector("button")
+            )
+            .addEventListener("click", entry_click);
+
+            button.setAttribute("data-a", i.toString());
+            button.setAttribute("data-b", (d.getUint32(back, true)).toString());
+            
             for ( ; j < kl; j++ ) {
                 type = types[j];
                 k = KEY.cloneNode(true);
