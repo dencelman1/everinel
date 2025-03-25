@@ -1,5 +1,16 @@
 
 
+// L: 0,
+
+// m: this.m,
+// t: this.t,
+// r: this.r,
+// EL: this.EL,
+
+// CompareType
+// LogicType
+
+
 create;
 read;
 
