@@ -99,16 +99,33 @@ table_deploy_many(tables, pathes);
 
 ```js
 import { AdminPanelServer } from 'everinel';
-import { table_many } from 'purekeep';
+import { table_many, table_config_many, single } from 'purekeep';
 
 (
     (
         port,
     ) => {
+        // if you connect to tables with config:
+        var ap_tables = table_config_many(names, pathes);
+
+        // else if you already have runned tables on your backend:
+        var
+            runned_tables = [
+                single("users table path"),
+                single("table1 path"),
+                single("sessions table path"),
+                single("table5 path"),
+                // .... - there are examples of your projects' tables
+            ],
+            
+            // in same order like in the names too (inside runned_tables)
+
+            ap_tables = table_many(names, runned_tables)
+        ;
         return (
             AdminPanelServer(
                 port,
-                table_many(names, pathes),
+                ap_tables,
                 () => console.log(port)
             )
         );

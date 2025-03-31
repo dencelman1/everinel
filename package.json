@@ -1,6 +1,6 @@
 {
     "name": "everinel",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "private": false,
     "description": "Admin panel of NodeJS database core \"purekeep\"",
     "main": "src/i.js",
