@@ -2,7 +2,7 @@
     "name": "everinel",
     "version": "1.0.0",
     "private": false,
-    "description": "Pure persistent binary NodeJS JavaScript database",
+    "description": "Admin panel of NodeJS database core \"purekeep\"",
     "main": "src/i.js",
     "type": "module",
     "imports": {
