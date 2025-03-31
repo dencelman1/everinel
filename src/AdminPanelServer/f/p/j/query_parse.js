@@ -38,7 +38,7 @@ export default (
 
                 type = 0,
                 I = 0,
-                
+                cond_oper = 0,
 
                 bf = null,
 
@@ -63,7 +63,6 @@ export default (
                         i++;
                     }
                     else {
-                        
                         if ((stage === 0) && (valid = (keys).includes(token))) {
                             Q.push(I = keys.indexOf(token));
                             type = types[I];
@@ -72,7 +71,7 @@ export default (
 
                         }
                         else if ((stage === 1) && (valid = Object.hasOwn(cond, token))) {
-                            Q.push(cond[token]);
+                            Q.push(cond_oper = cond[token]);
                             sepa = (
                                 (isstr = (type === 1) || (type === 13))
                                 ? (
@@ -93,14 +92,23 @@ export default (
                                 else {
                                     Q.push(qv.length);
                                     
-                                    qv.push(Array.from(new TextEncoder().encode(
-                                        (token_length = token.length) < (length)
-                                        ? (fill_str(token, length, (type === 1 ? 1: 2)))
-                                        :
-                                        token_length > length
-                                        ? trim_str(token, length)
-                                        : token
-                                    )));
+                                    qv.push(
+                                        Array
+                                        .from(
+                                            new TextEncoder()
+                                            .encode(
+                                                (cond_oper === 5)
+                                                ? token
+                                                :
+                                                (token_length = token.length) < (length)
+                                                ? fill_str(token, length, (type === 1 ? 1: 2))
+                                                :
+                                                token_length > length
+                                                ? trim_str(token, length)
+                                                : token
+                                            )
+                                        )
+                                    );
                                     sepa = " ";
                                 }
                             }

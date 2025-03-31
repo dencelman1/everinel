@@ -3,6 +3,14 @@
 Admin panel that is compatible with the [purekeep](https://github.com/dencelman1/purekeep) database
 
 
+# Installation:
+
+- Before running you need to install these packages:
+
+```sh
+npm i purekeep everinel
+```
+
 # Configurations:
 
 ```js
@@ -68,8 +76,18 @@ var
 
 ```
 
+- for detailed explanation of:
 
-# Deploy ( if not yet ):
+fs - table file size in bytes;
+bs - blocks amount;
+bs - block size;
+t - types of fields;
+r - lengths of fields;
+
+-> go to README.md file view in purekeep repository - [link](https://github.com/dencelman1/purekeep);
+
+
+# Deploy ( if you haven't done so yet ):
 
 ```js
 import { table_deploy_many } from 'purekeep';
@@ -105,3 +123,8 @@ import { table_many } from 'purekeep';
 type http://localhost:2000/h/a.html into your browser's search input;
 
 if you got error in console - restart server;
+
+
+# Explanation about interface:
+
+Soon....

@@ -1,6 +1,4 @@
 
-has && in without "\x00";
-
 [bl]:
 
 analysis scripts;
