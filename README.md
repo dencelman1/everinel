@@ -142,6 +142,6 @@ type http://localhost:2000/h/a.html into your browser's search input;
 if you got error in console - restart server;
 
 
-# Explanation about interface:
+# Explanation of the interface:
 
 Soon....
