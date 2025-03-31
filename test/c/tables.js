@@ -3,22 +3,39 @@ import { Type as _ } from '#purekeep';
 
 export default (
     (
-        (fs, int8, str8, bool) => (
+        (
+            fs, fba, bs,
+            int8, str8, bool
+        ) => (
             [
                 {
                     fs,
-                    t: [ int8, str8, bool, int8 ],
-                    r: [0,20,0,0],
+                    bs,
+                    fba,
+
+                    t: [
+                        int8,
+                        str8,
+                        bool,
+                        int8
+                    ],
+                    r: [0,13,0,0],
                 },
                 {
                     fs,
+                    bs,
+                    fba,
+                    
                     t: [ int8, int8, int8, int8 ],
                     r: [0,0,0,0],
                 },
             ]
         )
     )(
-        1003520,
+        4294967296, // 4*(1024**3)
+        0,
+        4096,
+
         _.int8,
         _.str8,
         _.bool,

@@ -71,8 +71,22 @@ export default (
                         )
                     ),
 
-
-                    load_input(I,t, tables[TABLE_I].d, atv.m[i][0], l,bfrom,to_input),
+                    load_input(
+                        I,
+    
+                        t,
+    
+                        bfrom[t](
+                            tables[TABLE_I].d,
+                            atv.m[i],
+                            true,
+                            l
+                        ),
+                        
+                        l,
+    
+                        to_input
+                    ),
 
                     form_fields.appendChild(r),
                     T

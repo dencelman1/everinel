@@ -71,6 +71,9 @@
         padding:10px;
         font-size:16px;
     }
+    & input.sm.ore {
+        width:120px;
+    }
     & input.sm {
         width:80px;
         padding-left:5px;

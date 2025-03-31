@@ -24,6 +24,7 @@ export default (
                 en = null,
                 enul = null,
                 k = null,
+                kstyle = null,
                 type = 0,
                 O = 0,
                 rule = 0,
@@ -48,17 +49,18 @@ export default (
                 type = types[j];
                 k = KEY.cloneNode(true);
 
-                k.style.width = (
+                (kstyle = k.style)
+                .width = (
                     (keys[j].w).toString() + "px"
                 );
-                k.style.color = (
+                kstyle.color = (
                     color[type]
                 );
                 rule = rules[j];
                 
                 k.querySelector("span")
                 .textContent = (
-                    bfrom[type](d,O + m[j][0],true,rule)
+                    bfrom[type](d,O + m[j],true,rule)
                     .toString()
                 );
                 

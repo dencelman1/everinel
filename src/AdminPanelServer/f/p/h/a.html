@@ -7,6 +7,7 @@
             <li class="table">
                 <button>
                     <span></span>
+                    <span></span>
                 </button>
             </li>
             <li class="field">
@@ -35,19 +36,19 @@
                 <ul></ul>
             </div>
             <div id="view">
-                <ul id="e">
-                    <li id="form">
-                        <form>
-                            <ul>
+                <li id="form">
+                    <form>
+                        <ul>
 
-                            </ul>
-                        </form>
-                    </li>
+                        </ul>
+                    </form>
+                </li>
+
+                <ul id="e">
+                    
 
                     <li id="fields">
-                        <input id="fieldsorder">
-                        <ul>
-                        </ul>
+                        <ul></ul>
                     </li>
 
                     <li id="entries">
@@ -56,22 +57,25 @@
                 </ul>
                 <div id="panel">
                     <div class="search gr">
-                        <button title="Reload" id="reload">R</button>
+                        <button title="Read" id="read">R</button>
 
-                        <input title="Offset" id="o" class="sm" type="number">
+                        <input title="Offset" id="o" class="sm ore" type="number">
                         <input title="Limit" id="l" class="sm" type="number">
-
+                        
+                        <input title="Start offset" id="from_i" class="sm">
+                        <input title="End offset" id="ea" class="sm ore">
+                        
                         <input title="Query" id="q">
                     </div>
                     
                     <div class="cud gr">
-                        <button title="Update" id="update">U</button>
-                        <button title="Delete" id="delete">D</button>
-                        <button title="Create" id="create">C</button>
-                        <button id="cudmsgButton"><input type="number" id="cudmsg"></input></button>
+                        <button title="Write" id="write">W</button>
+                        <button id="cudmsgButton">
+                            <input type="number" id="cudmsg"></input>
+                        </button>
                     </div>
 
-                    <button title="Open" id="open">+</button>
+                    <button title="Open entry" id="open">^</button>
                 </div>
             </div>
         </div>

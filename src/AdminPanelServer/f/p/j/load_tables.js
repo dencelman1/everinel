@@ -10,7 +10,9 @@ export default (
                 r = document.querySelector("#tmpl>.table"),
                 
                 c = null,
-                b = null
+                b = null,
+
+                ai = null
             ;
             i < l;
             i++
@@ -18,8 +20,12 @@ export default (
             (
                 c = r.cloneNode(true)
             )
-            .querySelector('span')
-            .textContent = a[i].n.n;
+            .querySelector('span:nth-child(1)')
+            .textContent = (ai = a[i]).n.n;
+
+            c.querySelector('span:nth-child(2)')
+            .textContent = ai.v.EL;
+
             (b = c.querySelector("button")).setAttribute("data-a", i.toString());
             b.addEventListener("click", ontable);
             tables.appendChild(c);

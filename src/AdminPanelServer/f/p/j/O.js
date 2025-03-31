@@ -4,18 +4,8 @@ export var
     headers = {
         "Content-Type": "application/octet-stream"
     },
-    createO = {
-        headers,
-        method: "POST",
-        
-        body: null
-    },
-
-    deleteO = {
-        method: "DELETE",
-    },
-
-    updateO = {
+    
+    writeO = {
         method: "PATCH",
         body: null,
     },

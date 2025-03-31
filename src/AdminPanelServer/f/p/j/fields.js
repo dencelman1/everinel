@@ -15,12 +15,12 @@ export var
                 w: Math.max((a.length * letter_size), (width[types[i]] || rules[i]) * letter_size),
                 a, // key name
                 b:true, // including for view
-                o:i, // order number
+                i,
             }
         )
     ),
     _fo_rd = (
-        (fieldsUl,color,FIELD,) => (a,v,i) => {
+        (fieldsUl,color,FIELD,onfieldclick) => (a,v,i) => {
             var
                 f = FIELD.cloneNode(true),
                 fb = f.querySelector("button"),
@@ -33,6 +33,10 @@ export var
                 (fbs.textContent = va),
                 (fb.style.width = v.w.toString() + "px"),
                 (fbs.style.color = color[t]),
+
+                fb.setAttribute("data-a", v.i.toString()),
+                fb.setAttribute("data-b", "true"),
+                fb.addEventListener("click", onfieldclick),
 
                 fieldsUl.appendChild(f),
                 a

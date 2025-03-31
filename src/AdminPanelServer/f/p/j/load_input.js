@@ -1,26 +1,21 @@
 
 
 export default (
-    (I,t, d,o,l,bfrom,to_input) => {
-        return console.log(
-            I[
-                t === 2
-                ? "checked"
-                : "value"
-            ] = (
-                to_input[t](
-                    
-                    bfrom[t](
-                        d,
-                        o,
-                        true,
+    (I,t, v,l,to_input) => {
+        return (
+            (
+                I[
+                    t === 2
+                    ? "checked"
+                    : "value"
+                ] = (
+                    to_input[t](
+                        v,
                         l
-                    ),
-
-                    l
-                    
+                    )
                 )
-            )
+            ),
+            v
         );
     }
 )

@@ -2,7 +2,7 @@
 
 export var
     formclose = (t) => (
-        t.setAttribute("title", "Create"),
-        "+"
+        t.setAttribute("title", "Open entry"),
+        "^"
     )
 ;

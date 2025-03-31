@@ -3,9 +3,9 @@
 
 export var 
     _entry_click = (
-        (T,a,tables, formopen,cudmsg,to_input,load_input,bfrom) => (e) => {
+        (T,a,tables, formopen,cudmsg,to_input,load_input,bfrom,bto) => (event) => {
             var
-                t = e.currentTarget,
+                t = event.currentTarget,
                 ti = T(),
 
                 at = a[ti],
@@ -20,7 +20,8 @@ export var
                 ii = ( Number(t.getAttribute('data-a')) * EL ),
                 gi = Number(t.getAttribute('data-b')),
 
-                d = ct.e,
+                e = ct.e,
+                d = ct.d,
 
                 ul = document.querySelector("#form>form>ul")
             ;
@@ -30,27 +31,35 @@ export var
                     i = 0,
                     l = rules.length,
                     rule = 0,
-                    type = 0
+                    type = 0,
+                    mi = 0,
+
+                    offset = 0
                 ;
                 i < l;
                 (i++)
             ) {
-                type = types[i];
-                rule = rules[i];
-
-                console.log(type);
-                
-
-                load_input(
-                    ul.querySelector(`li>input[data-a="${i}"]`),
-                    type,
+                bto[type = types[i]](
                     d,
-
-                    (ii) + m[i][0],
-                    rule,
-
-                    bfrom,
-                    to_input
+                    (mi = m[i]),
+                    load_input(
+                        ul.querySelector(`li>input[data-a="${i}"]`),
+    
+                        type,
+    
+                        bfrom[type](
+                            e,
+                            (ii) + mi,
+                            true,
+                            (rule = rules[i])
+                        ),
+                        
+                        rule,
+    
+                        to_input
+                    ),
+                    true,
+                    rule
                 );
             };
 

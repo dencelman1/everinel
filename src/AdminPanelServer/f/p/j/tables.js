@@ -13,16 +13,24 @@ export var
                         )
                     )
                 ),
-                l = 1
+                l = 1,
+
+                max_so = (V.fs - 1)
             ;
             return (
-                d.setInt8(0, 1),
-                ({
+                {
                     d,
                     k: Array.from(v.n.k, fields_from(V.r,16,width,V.t)),
                     
                     e: null,
                     el: 0,
+
+                    max_so,
+
+                    from_i: 0,
+                    ea: V.bs,
+                    
+                    i: -1,
 
                     q: "",
                     qr: true,
@@ -30,15 +38,18 @@ export var
                     qp: "",
                     ql: 0,
                     qv: [],
+
                     qlimit:l,
 
-                    le:Math.floor(1048576 / EL),
+                    le: Math.floor(1048576 / EL),
                     l,
                     o: 0,
 
-                    i: -1,
                     cudmsg: false,
-                })
+
+                    entry_buffer: new DataView(new ArrayBuffer(EL)),
+                    add_buffer: new DataView(new ArrayBuffer(EL)),
+                }
             );
         }
     )

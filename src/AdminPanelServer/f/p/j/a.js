@@ -5,7 +5,6 @@ import _load_table from './load_table.js';
 import to_input from './to_input.js';
 import load_input from './load_input.js';
 
-
 import color from './color.js';
 import width from './width.js';
 
@@ -17,10 +16,9 @@ import bto from './purekeep/bto.js';
 import bfrom from './purekeep/bfrom.js';
 
 import limits from './limits.js';
-import {fi_keydown, fi_blur} from './fields_i/i.js';
-import {createO, readO, updateO, deleteO} from "./O.js";
+import { readO, writeO } from "./O.js";
 
-import {fields_contextmenu, fields_from, _fo_rd} from './fields.js';
+import { fields_from, _fo_rd} from './fields.js';
 import {_open_click} from './open.js';
 
 import {tables_from} from './tables.js';
@@ -28,6 +26,7 @@ import {onintblur} from './int.js';
 import {formclose} from './form.js';
 import {_entry_click} from "./entries.js";
 
+import _sort_by_field from './_sort_by_field.js';
 
 import query_parse from './query_parse.js';
 
@@ -44,11 +43,12 @@ fetch("/t/c")
         
         fieldsUl = fields.querySelector("ul"),
 
-        fields_i = fields.querySelector("input"),
-        
         entriesUl = document.querySelector("#entries>ul"),
 
         FIELD = document.querySelector("#tmpl>.field"),
+
+        from_i = document.getElementById("from_i"),
+        ea = document.getElementById("ea"),
 
         OPEN = document.getElementById("open"),
         uq = new URLSearchParams(window.location.search),
@@ -73,7 +73,9 @@ fetch("/t/c")
             }
         ),
 
-        entry_click = _entry_click(getT,a,tables,formopen,cudmsg,to_input,load_input,bfrom),
+        entry_click = _entry_click(getT,a,tables,formopen,cudmsg,to_input,load_input,bfrom,bto),
+
+        
 
         number_input = (
             (f) => (e) => {
@@ -84,8 +86,9 @@ fetch("/t/c")
 
                     type = v.t[i],
                     limit = limits[type],
+
                     tv = t.value,
-                    value = f((tv && tv !== ".") ? tv : "0"),
+                    value = f(tv),
                     l0 = limit[0]
                 ;
                 return (
@@ -94,7 +97,7 @@ fetch("/t/c")
 
                     bto[type](
                         tables[T].d,
-                        v.m[i][0],
+                        v.m[i],
                         value,
                         true,
                         0
@@ -102,8 +105,6 @@ fetch("/t/c")
                 );
             }
         ),
-
-        
 
         formFieldsRd = _formFieldsRd(
             document.querySelector("#tmpl>.form-input"),
@@ -116,7 +117,7 @@ fetch("/t/c")
                     i = Number( t.getAttribute("data-a") )
                 ;
                 return (
-                    tables[T].d.setInt8(a[T].v.m[i][0], (t.checked ? 1 : 0))
+                    tables[T].d.setInt8(a[T].v.m[i], (t.checked ? 1 : 0))
                 )
             },
             (e) => {
@@ -128,7 +129,7 @@ fetch("/t/c")
                 return (
                     bto[v.t[i]](
                         tables[T].d,
-                        v.m[i][0],
+                        v.m[i],
                         fill_str(t.value),
                         true,
                         v.r[i]
@@ -137,7 +138,7 @@ fetch("/t/c")
             },
             number_input( parseInt ),
             number_input( parseFloat ),
-            number_input( BigInt ),
+            number_input( (v) => (v.inludes(".") && (v = "0"), BigInt(v) )),
             
             getT,
             bfrom,
@@ -147,34 +148,34 @@ fetch("/t/c")
             load_input,
             to_input
         ),
-
-        load_table = _load_table(entry_click,offset,limit,query,cudmsg,_fo_rd(fieldsUl,color,FIELD),formFieldsRd,load_entries,color,bfrom),
-
-        onintinput = (e) => {
-            var t = e.currentTarget;
-            return (
-                (tables[T])[t.getAttribute('id')] = parseInt(t.value)
-            )
-        },
-
-        arrayBufferPOST = (r) => (
-            (cudmsg.className = (tables[T].cudmsg = r.ok).toString()),
-            r.arrayBuffer()
-        ),
         
-        createThen = (
-            (b) => (
-                cudmsg.value = (
-                    (
-                        tables[T]
-                        .i = (
-                            new DataView(b)
-                            .getUint32(0,true)
-                        )
-                    )
-                    .toString()
+        load_table = _load_table(
+            entry_click,
+            offset,
+            limit,
+            query,
+            cudmsg,
+            _fo_rd(
+                fieldsUl,
+                color,
+                FIELD,
+                _sort_by_field(
+                    a,
+                    tables,
+                    getT,
+                    color,
+                    bfrom,
+                    bto,
+                    entry_click,
+                    load_entries
                 )
-            )
+            ),
+            formFieldsRd,
+            load_entries,
+            color,
+            bfrom,
+            from_i,
+            ea
         ),
 
         cudmsgButton = cudmsg.parentElement,
@@ -194,21 +195,73 @@ fetch("/t/c")
                 cudmsgcopy_to,
                 200
             )
+        ),
+
+        on_so_input = (
+            (e) => {
+                var
+                    ct = tables[T],
+                    t = e.currentTarget
+                ;
+                return (
+                    
+                    ct[
+                        t.getAttribute("id")
+                    ] = (
+                        Math.min(
+                            Math.max(
+                                (parseInt(eval(t.value)) || 0),
+                                0
+                            ),
+                            ct.max_so
+                        )
+                    )
+                );
+            }
         )
-        
     ;
     return (
 
-        // TODO:
-        cudmsgButton
+        document
+        .getElementById("e")
         .addEventListener(
-            "contextmenu",
-            (e) => {
+            "wheel",
+            function(e) {
                 return (
-                    e.preventDefault()
+                    (e.ctrlKey)
+                    &&
+                    (
+                        e.preventDefault(),
+                        (this.scrollLeft += e.deltaY)
+                    )
                 );
             }
         ),
+
+        document
+        .getElementById("write")
+        .addEventListener(
+            "click",
+            () => {
+                var
+                    ct = tables[T],
+                    i = ct.i
+                ;
+                return (
+                    (writeO.body = ct.d.buffer),
+
+                    fetch(`/t/write/${T}/${i.toString()}`, writeO)
+                    .then(
+                        (r) => (
+                            r.ok
+                            ? console.log(`wrote ${i.toString()} ${Date.now().toString()}`)
+                            : console.error(`error ${r.status.toString()} ${Date.now().toString()}`)
+                        )
+                    )
+                )
+            }
+        ),
+
 
         cudmsgButton
         .addEventListener(
@@ -239,47 +292,14 @@ fetch("/t/c")
             }
         )),
 
-        fields.addEventListener("contextmenu", fields_contextmenu),
-
         document
-        .getElementById("delete")
-        .addEventListener(
-            "click",
-            (e) => {
-                var ct = tables[T],
-                    i = ct.i;
-                
-                return(
-                    (i >= 0)
-                    &&
-                    fetch( `/t/delete/${T.toString()}/${ i.toString() }`, deleteO)
-                    .then(
-                        (r) => {
-                            var ok = r.ok;
-                            return (
-                                (cudmsg.className = (ct.cudmsg = ok).toString()),
-
-                                cudmsg.value = (
-                                    ct.i = (
-                                        ok
-                                        ? -1
-                                        : -r.status
-                                    )
-                                )
-                                .toString()
-                            );
-                        }
-                    )
-                );
-            }
-        ),
-
-        document
-        .getElementById("reload")
+        .getElementById("read")
         .addEventListener("click", (
             (e) => {
-                var ct = tables[T],
-                    qlimit = ( ct.l );
+                var
+                    ct = tables[T],
+                    qlimit = ( ct.l )
+                ;
                 return (ct.qr) && (
                     fetch(
                         (
@@ -289,7 +309,7 @@ fetch("/t/c")
                                     .body = JSON.stringify(ct.qv)
                                 )
                                 .length
-                            }/${ct.o}/${qlimit}/${ct.ql}/${ct.qp}`
+                            }/${ct.o}/${qlimit}/${ct.ql}/${ct.from_i}/${ct.ea}/${ct.qp}`
                         ),
                         readO
                     )
@@ -313,37 +333,39 @@ fetch("/t/c")
             }
         )),
 
-        document
-        .getElementById("create")
-        .addEventListener("click", (e) => (
-            confirm("Create?")
-            &&
-            (
-                (createO.body = tables[T].d),
-
-                fetch(("/t/create/" + T.toString()), createO)
-                .then( arrayBufferPOST )
-                .then( createThen )
-            )
+        offset.addEventListener("input", (
+            (e) => {
+                var
+                    t = e.currentTarget,
+                    ctable = tables[T],
+                    v = parseInt(t.value || "0"),
+                    l0 = 0
+                ;
+                return (
+                    (ctable.o === v)
+                    ||
+                    (
+                        ((0 > v) || (v > (l0 = 4294967295)))
+                        && (t.value = (v = l0).toString()),
+                        
+                        (ctable.o = v)
+                    )
+                )
+            }
         )),
-
-        fields_i.addEventListener("keydown", fi_keydown),
-        fields_i.addEventListener("blur", fi_blur),
-        
-        offset.addEventListener("input", onintinput),
         limit.addEventListener("input", (
             (e) => {
                 var
                     t = e.currentTarget,
                     ctable = tables[T],
-                    v = parseInt(t.value),
-                    l0 = 0
+                    v = parseInt(t.value || "0"),
+                    l0 = 1
                 ;
                 return (
                     (ctable.l === v)
                     ||
                     (
-                        ((0 > v) || (v > (l0 = ctable.le)))
+                        ((1 > v) || (v > (l0 = ctable.le)))
                         && (t.value = (v = l0).toString()),
                         
                         (ctable.l = v)
@@ -352,8 +374,8 @@ fetch("/t/c")
             }
         )),
 
-        offset.addEventListener("blur",onintblur),
-        limit.addEventListener("blur",onintblur),
+        from_i.addEventListener("blur", on_so_input),
+        ea.addEventListener("blur", on_so_input),
 
         OPEN.addEventListener("click",_open_click(view,formclose)),
 

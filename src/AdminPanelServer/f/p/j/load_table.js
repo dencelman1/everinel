@@ -1,7 +1,7 @@
 
 
 export default (
-    (entry_click,offset,limit,query,cudmsg,fo_rd,formFieldsRd,load_entries,color,bfrom) => (b,a,ctable) => {
+    (entry_click,offset,limit,query,cudmsg,fo_rd,formFieldsRd,load_entries,color,bfrom,from_i,ea) => (b,a,ctable) => {
         var
             av = a.v
         ;
@@ -15,6 +15,9 @@ export default (
             
             (cudmsg.value = ctable.i.toString()),
             (cudmsg.className = ctable.cudmsg.toString()),
+
+            (from_i.value = ctable.from_i.toString()),
+            (ea.value = ctable.ea.toString()),
 
             ctable
             .k

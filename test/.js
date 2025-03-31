@@ -10,7 +10,7 @@ import pathes from './c/pathes.js';
         return (
             AdminPanelServer(
                 port,
-                table_many(names, pathes, 5_000),
+                table_many(names, pathes),
                 () => console.log(port)
             )
         );

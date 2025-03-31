@@ -6,6 +6,14 @@
     padding:0 0 0 5px;
     border-radius:5px;
     background-color:white;
+    display:flex;
+    flex-direction:row;
+
+    &>span:nth-child(2){
+        font-size:12px;
+        margin:2px 5px 0 auto;
+        display:block;
+    }
     &:hover {
         outline:2px solid gray;
     }
@@ -21,7 +29,7 @@
     border:none;
     outline:1px solid gray;
     
-    &>span {
+    &>span:nth-child(1) {
         font-size:16px;
         
         margin:0;

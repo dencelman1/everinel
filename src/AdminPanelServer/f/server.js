@@ -2,7 +2,7 @@ import { dirname, extname, join } from 'path';
 import { existsSync, readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 
-import { create_body, read_body, delete_body,update_body } from './body/i.js';
+import { read_body, write_body } from './body/i.js';
 
 
 export default (
@@ -16,28 +16,12 @@ export default (
             },
             pb = join( dirname( fileURLToPath( import.meta.url ) ), "p" ),
 
-            create = funcs.create,
             read = funcs.read,
-            
-            oncreate = (b,tb,s) => {
-                var v = create(tb,s,b,Buffer.allocUnsafe(4));
-                return (
-                    crud_a(s)
-                    .writeHead( 200, null )
-                    .end(
-                        v
-                    )
-                );
-            },
-
-            
-            crud_a = (s) => (
-                s
-                .setHeader("Content-Type", "application/octet-stream")
-            ),
+            write = funcs.write,
 
             buffer_from = (v) => Buffer.from(v)
         ;
+        // application/octet-stream
         
         return (
             (q,s) => {
@@ -69,34 +53,19 @@ export default (
                         )
                         :
                         u
-                        .startsWith('create/')
+                        .startsWith('write/')
                         ? (
-                            create_body(
+                            write_body(
                                 q,
                                 s,
-                                tables[parseInt(u.substring(7))],
-                                oncreate
-                            )
-                        )
-                        :
-                        u
-                        .startsWith('update/')
-                        ? (
-                            update_body(
-                                q,
-                                s,
-                                tables[parseInt(u.substring(7))],
-                                oncreate
-                            )
-                        )
-                        :
-                        u
-                        .startsWith('delete/')
-                        ? (
-                            delete_body(
-                                s,
-                                tables[ (u = u.substring(7)).substring(0, (i = u.indexOf("/"))) ].v,
-                                u.substring(i + 1)
+                                tables[
+                                    parseInt(
+                                        u.substring(6, (i = u.indexOf("/", 7)) )
+                                    )
+                                ]
+                                .v,
+                                Number(u.substring(i + 1)),
+                                write
                             )
                         )
                         :
